@@ -1,0 +1,137 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "anu",
+      "email": "anu_shaji@epam.com",
+      "password": "$2a$10$B3prxaiCm6F3CQ4QSh.e0OKtG1.lQX/tC0KaEyAaV9Xi314pBQxa6",
+      "created_at": "2026-07-11 04:37:15"
+    }
+  ],
+  "hotels": [
+    {
+      "id": 1,
+      "name": "Le Grand Parisian",
+      "location": "Paris",
+      "description": "Elegant hotel in the heart of Paris with stunning Eiffel Tower views.",
+      "price_per_night": 320,
+      "rating": 4.8,
+      "image_url": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80",
+      "amenities": "Free WiFi, Spa, Pool, Restaurant, Bar, Room Service"
+    },
+    {
+      "id": 2,
+      "name": "Montmartre Boutique",
+      "location": "Paris",
+      "description": "Charming boutique hotel nestled in the artistic Montmartre district.",
+      "price_per_night": 195,
+      "rating": 4.5,
+      "image_url": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&q=80",
+      "amenities": "Free WiFi, Breakfast Included, Concierge, Rooftop Terrace"
+    },
+    {
+      "id": 3,
+      "name": "Tokyo Imperial Palace Hotel",
+      "location": "Tokyo",
+      "description": "Luxurious five-star hotel near the Imperial Palace with traditional Japanese design.",
+      "price_per_night": 410,
+      "rating": 4.9,
+      "image_url": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80",
+      "amenities": "Free WiFi, Onsen, Sushi Restaurant, Tea Ceremony, Gym, Valet"
+    },
+    {
+      "id": 4,
+      "name": "Shibuya Crossing Suites",
+      "location": "Tokyo",
+      "description": "Modern hotel steps away from the iconic Shibuya Crossing.",
+      "price_per_night": 250,
+      "rating": 4.6,
+      "image_url": "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=600&q=80",
+      "amenities": "Free WiFi, Gym, Ramen Bar, Karaoke Lounge, 24hr Convenience Store"
+    },
+    {
+      "id": 5,
+      "name": "Manhattan Sky Tower",
+      "location": "New York",
+      "description": "Iconic skyscraper hotel with breathtaking Manhattan skyline views.",
+      "price_per_night": 480,
+      "rating": 4.7,
+      "image_url": "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=600&q=80",
+      "amenities": "Free WiFi, Rooftop Bar, Spa, Fitness Center, Business Lounge, Valet"
+    },
+    {
+      "id": 6,
+      "name": "Brooklyn Bridge Inn",
+      "location": "New York",
+      "description": "Trendy boutique hotel in DUMBO with stunning bridge views.",
+      "price_per_night": 280,
+      "rating": 4.4,
+      "image_url": "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80",
+      "amenities": "Free WiFi, Artisan Coffee Bar, Bicycle Rentals, Pet Friendly"
+    },
+    {
+      "id": 7,
+      "name": "Buckingham Grand Hotel",
+      "location": "London",
+      "description": "Classic British elegance near Buckingham Palace and Hyde Park.",
+      "price_per_night": 360,
+      "rating": 4.8,
+      "image_url": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&q=80",
+      "amenities": "Free WiFi, Afternoon Tea, Spa, Fine Dining, Butler Service, Garden"
+    },
+    {
+      "id": 8,
+      "name": "Covent Garden Retreat",
+      "location": "London",
+      "description": "Contemporary hotel in the vibrant Covent Garden theatre district.",
+      "price_per_night": 220,
+      "rating": 4.5,
+      "image_url": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80",
+      "amenities": "Free WiFi, Rooftop Pool, Bar, Yoga Studio, Theatre Concierge"
+    },
+    {
+      "id": 9,
+      "name": "Sydney Harbour View Resort",
+      "location": "Sydney",
+      "description": "Premium waterfront resort with panoramic views of the Sydney Opera House.",
+      "price_per_night": 390,
+      "rating": 4.9,
+      "image_url": "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=600&q=80",
+      "amenities": "Free WiFi, Infinity Pool, Seafood Restaurant, Spa, Yacht Rentals"
+    },
+    {
+      "id": 10,
+      "name": "Bondi Beach Bungalows",
+      "location": "Sydney",
+      "description": "Laid-back beachside hotel just steps from world-famous Bondi Beach.",
+      "price_per_night": 210,
+      "rating": 4.6,
+      "image_url": "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=600&q=80",
+      "amenities": "Free WiFi, Surf Lessons, Beach Club, Outdoor BBQ, Bike Hire"
+    }
+  ],
+  "bookings": [
+    {
+      "id": 1,
+      "booking_ref": "SR-2BDCDF91",
+      "user_id": 1,
+      "hotel_id": 3,
+      "guest_name": "anu",
+      "check_in": "2026-07-16",
+      "check_out": "2026-07-29",
+      "guests": 1,
+      "total_price": 5330,
+      "status": "confirmed",
+      "created_at": "2026-07-11 04:38:15",
+      "hotel_name": "Tokyo Imperial Palace Hotel",
+      "hotel_location": "Tokyo",
+      "image_url": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80",
+      "price_per_night": 410
+    }
+  ],
+  "_seq": {
+    "users": 1,
+    "hotels": 10,
+    "bookings": 1
+  }
+}

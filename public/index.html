@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StayRed – Find Your Perfect Stay</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo" onclick="showPage('home')">
+        <span class="logo-icon">&#9776;</span>
+        Stay<span class="logo-accent">Red</span>
+      </a>
+      <div class="nav-links">
+        <a href="#" class="nav-link" onclick="showPage('home')">Search</a>
+        <a href="#" class="nav-link" id="nav-bookings" onclick="handleMyBookings()">My Bookings</a>
+        <button class="btn-nav" id="nav-auth-btn" onclick="handleAuthNav()">Login</button>
+        <span id="nav-username" class="nav-username" style="display:none;"></span>
+      </div>
+      <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#" onclick="showPage('home'); toggleMobileMenu()">Search</a>
+      <a href="#" onclick="handleMyBookings(); toggleMobileMenu()">My Bookings</a>
+      <a href="#" id="mobile-auth" onclick="handleAuthNav(); toggleMobileMenu()">Login</a>
+    </div>
+  </nav>
+
+  <!-- PAGES -->
+  <main id="app">
+
+    <!-- HOME PAGE -->
+    <div id="page-home" class="page active">
+      <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <h1>Find Your Perfect Stay</h1>
+          <p>Discover amazing hotels in the world's most iconic destinations</p>
+          <div class="search-box">
+            <div class="search-field">
+              <label for="destination">Destination</label>
+              <select id="destination">
+                <option value="">Select a destination...</option>
+                <option value="Paris">🇫🇷 Paris, France</option>
+                <option value="Tokyo">🇯🇵 Tokyo, Japan</option>
+                <option value="New York">🗽 New York, USA</option>
+                <option value="London">🇬🇧 London, UK</option>
+                <option value="Sydney">🦘 Sydney, Australia</option>
+              </select>
+            </div>
+            <div class="search-field">
+              <label for="checkin-search">Check-in</label>
+              <input type="date" id="checkin-search" />
+            </div>
+            <div class="search-field">
+              <label for="checkout-search">Check-out</label>
+              <input type="date" id="checkout-search" />
+            </div>
+            <div class="search-field">
+              <label for="guests-search">Guests</label>
+              <select id="guests-search">
+                <option value="1">1 Guest</option>
+                <option value="2">2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+                <option value="5">5+ Guests</option>
+              </select>
+            </div>
+            <button class="btn-search" onclick="searchHotels()">Search Hotels</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESULTS SECTION -->
+      <section class="results-section" id="results-section" style="display:none;">
+        <div class="container">
+          <div class="results-header">
+            <h2 id="results-title">Hotels</h2>
+            <span id="results-count" class="results-count"></span>
+          </div>
+          <div class="hotels-grid" id="hotels-grid"></div>
+        </div>
+      </section>
+
+      <!-- FEATURED DESTINATIONS -->
+      <section class="destinations-section" id="destinations-section">
+        <div class="container">
+          <h2 class="section-title">Popular Destinations</h2>
+          <p class="section-subtitle">Explore our hand-picked selection of world-class destinations</p>
+          <div class="destinations-grid">
+            <div class="dest-card" onclick="quickSearch('Paris')">
+              <div class="dest-img" style="background-image:url('https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&q=80')"></div>
+              <div class="dest-info"><h3>Paris</h3><p>France</p></div>
+            </div>
+            <div class="dest-card" onclick="quickSearch('Tokyo')">
+              <div class="dest-img" style="background-image:url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80')"></div>
+              <div class="dest-info"><h3>Tokyo</h3><p>Japan</p></div>
+            </div>
+            <div class="dest-card" onclick="quickSearch('New York')">
+              <div class="dest-img" style="background-image:url('https://images.unsplash.com/photo-1534430480872-3498386e7856?w=600&q=80')"></div>
+              <div class="dest-info"><h3>New York</h3><p>USA</p></div>
+            </div>
+            <div class="dest-card" onclick="quickSearch('London')">
+              <div class="dest-img" style="background-image:url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&q=80')"></div>
+              <div class="dest-info"><h3>London</h3><p>United Kingdom</p></div>
+            </div>
+            <div class="dest-card" onclick="quickSearch('Sydney')">
+              <div class="dest-img" style="background-image:url('https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=600&q=80')"></div>
+              <div class="dest-info"><h3>Sydney</h3><p>Australia</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- AUTH PAGE -->
+    <div id="page-auth" class="page">
+      <div class="auth-container">
+        <div class="auth-card">
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Login</button>
+            <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Register</button>
+          </div>
+
+          <!-- LOGIN FORM -->
+          <form id="form-login" onsubmit="handleLogin(event)">
+            <h2>Welcome Back</h2>
+            <p class="auth-subtitle">Sign in to manage your bookings</p>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" id="login-email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="login-password" placeholder="Your password" required />
+            </div>
+            <div id="login-error" class="form-error" style="display:none;"></div>
+            <button type="submit" class="btn-primary btn-full">Sign In</button>
+            <p class="auth-switch">Don't have an account? <a href="#" onclick="switchAuthTab('register')">Register now</a></p>
+          </form>
+
+          <!-- REGISTER FORM -->
+          <form id="form-register" style="display:none;" onsubmit="handleRegister(event)">
+            <h2>Create Account</h2>
+            <p class="auth-subtitle">Join StayRed and start exploring</p>
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="reg-name" placeholder="John Doe" required />
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" id="reg-email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="reg-password" placeholder="Min. 6 characters" required minlength="6" />
+            </div>
+            <div id="register-error" class="form-error" style="display:none;"></div>
+            <button type="submit" class="btn-primary btn-full">Create Account</button>
+            <p class="auth-switch">Already have an account? <a href="#" onclick="switchAuthTab('login')">Sign in</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- MY BOOKINGS PAGE -->
+    <div id="page-bookings" class="page">
+      <div class="container page-content">
+        <h2 class="page-title">My Bookings</h2>
+        <div id="bookings-list"></div>
+      </div>
+    </div>
+
+    <!-- CONFIRMATION PAGE -->
+    <div id="page-confirmation" class="page">
+      <div class="container page-content">
+        <div class="confirmation-card">
+          <div class="confirmation-icon">&#10003;</div>
+          <h2>Booking Confirmed!</h2>
+          <p class="confirmation-subtitle">Your reservation has been successfully placed.</p>
+          <div id="receipt-details" class="receipt"></div>
+          <div class="confirmation-actions">
+            <button class="btn-primary" onclick="showPage('bookings'); loadMyBookings()">View All Bookings</button>
+            <button class="btn-outline" onclick="showPage('home')">Book Another Hotel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOOKING MODAL -->
+  <div id="booking-modal" class="modal-overlay" style="display:none;" onclick="closeModalOutside(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div class="modal-header">
+        <h2 id="modal-hotel-name">Book Your Stay</h2>
+        <p id="modal-hotel-location" class="modal-subtitle"></p>
+      </div>
+      <div class="modal-body">
+
+        <!-- STEP 1: BOOKING DETAILS -->
+        <div id="step-booking" class="modal-step">
+          <h3 class="step-title"><span class="step-num">1</span> Stay Details</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Guest Name</label>
+              <input type="text" id="book-guest-name" placeholder="Full name" required />
+            </div>
+            <div class="form-group">
+              <label>Number of Guests</label>
+              <select id="book-guests">
+                <option value="1">1 Guest</option>
+                <option value="2">2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+                <option value="5">5+ Guests</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Check-in Date</label>
+              <input type="date" id="book-checkin" required onchange="updateTotalPrice()" />
+            </div>
+            <div class="form-group">
+              <label>Check-out Date</label>
+              <input type="date" id="book-checkout" required onchange="updateTotalPrice()" />
+            </div>
+          </div>
+          <div class="price-summary" id="price-summary" style="display:none;">
+            <div class="price-row">
+              <span id="price-nights-label">0 nights</span>
+              <span id="price-nights-total">$0</span>
+            </div>
+            <div class="price-row price-total">
+              <span>Total</span>
+              <span id="price-grand-total">$0</span>
+            </div>
+          </div>
+          <div id="booking-error" class="form-error" style="display:none;"></div>
+          <button class="btn-primary btn-full" onclick="proceedToPayment()">Continue to Payment</button>
+        </div>
+
+        <!-- STEP 2: PAYMENT -->
+        <div id="step-payment" class="modal-step" style="display:none;">
+          <button class="btn-back" onclick="showStep('booking')">&#8592; Back to Details</button>
+          <h3 class="step-title"><span class="step-num">2</span> Payment</h3>
+          <div class="test-card-notice">
+            <strong>Test Mode</strong> — Use card: <code>4242 4242 4242 4242</code>
+          </div>
+          <div class="form-group">
+            <label>Cardholder Name</label>
+            <input type="text" id="pay-name" placeholder="Name on card" required />
+          </div>
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" id="pay-card" placeholder="1234 5678 9012 3456" maxlength="19"
+              oninput="formatCard(this)" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Expiry Date</label>
+              <input type="text" id="pay-expiry" placeholder="MM/YY" maxlength="5"
+                oninput="formatExpiry(this)" required />
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="text" id="pay-cvv" placeholder="123" maxlength="4"
+                oninput="this.value=this.value.replace(/\D/g,'')" required />
+            </div>
+          </div>
+          <div class="price-summary">
+            <div class="price-row price-total">
+              <span>Amount to Charge</span>
+              <span id="pay-total">$0</span>
+            </div>
+          </div>
+          <div id="payment-error" class="form-error" style="display:none;"></div>
+          <button class="btn-primary btn-full" id="pay-btn" onclick="processPayment()">
+            <span id="pay-btn-text">Pay Now</span>
+            <span id="pay-spinner" class="spinner" style="display:none;"></span>
+          </button>
+          <p class="secure-note">&#128274; Secure test payment · No real charges</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="toast" style="display:none;"></div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="footer-logo">Stay<span class="logo-accent">Red</span></span>
+          <p>Discover the world, one stay at a time.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Destinations</h4>
+          <a href="#" onclick="quickSearch('Paris')">Paris</a>
+          <a href="#" onclick="quickSearch('Tokyo')">Tokyo</a>
+          <a href="#" onclick="quickSearch('New York')">New York</a>
+          <a href="#" onclick="quickSearch('London')">London</a>
+          <a href="#" onclick="quickSearch('Sydney')">Sydney</a>
+        </div>
+        <div class="footer-links">
+          <h4>Support</h4>
+          <a href="#">Help Center</a>
+          <a href="#">Cancellation Policy</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 StayRed. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

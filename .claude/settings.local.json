@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s --max-time 5 http://localhost:3000/api/hotels)",
+      "Bash(curl -sv http://localhost:3000/api/hotels)",
+      "Bash(node *)",
+      "Bash(pkill -f \"node server.js\")",
+      "Bash(PORT=4000 node server.js)",
+      "Bash(curl -s http://localhost:4000/api/hotels)",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s -c /tmp/stayred_cookies.txt -X POST http://localhost:4000/api/auth/register -H 'Content-Type: application/json' -d '{\"name\":\"Test User\",\"email\":\"test@example.com\",\"password\":\"secret123\"}')",
+      "Bash(curl -s 'http://localhost:4000/api/hotels?location=Paris')",
+      "Bash(grep -v \"^/Users/Anu_Shaji/Capstone/codemie/hotel-booking$\")"
+    ]
+  }
+}
