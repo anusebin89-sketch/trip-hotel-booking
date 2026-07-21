@@ -1,21 +1,17 @@
+
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const db = require('../database/db');
 const { requireAuth } = require('../middleware/auth');
+const validate = require('../middleware/validate');
+const { createBookingSchema } = require('../validators/bookings.schemas');
 
 const router = express.Router();
 
 const MOCK_TEST_CARD = '4242424242424242';
 
-router.post('/', requireAuth, (req, res) => {
+router.post('/', requireAuth, validate(createBookingSchema), (req, res) => {
   const { hotelId, guestName, checkIn, checkOut, guests, cardNumber, cardName, expiry, cvv } = req.body;
-
-  if (!hotelId || !guestName || !checkIn || !checkOut || !guests) {
-    return res.status(400).json({ error: 'All booking fields are required.' });
-  }
-  if (!cardNumber || !cardName || !expiry || !cvv) {
-    return res.status(400).json({ error: 'All payment fields are required.' });
-  }
 
   const cleanCard = cardNumber.replace(/\s+/g, '');
   if (cleanCard !== MOCK_TEST_CARD) {
@@ -31,9 +27,6 @@ router.post('/', requireAuth, (req, res) => {
 
   const checkInDate = new Date(checkIn);
   const checkOutDate = new Date(checkOut);
-  if (isNaN(checkInDate) || isNaN(checkOutDate) || checkOutDate <= checkInDate) {
-    return res.status(400).json({ error: 'Invalid check-in or check-out dates.' });
-  }
 
   const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
   const totalPrice = parseFloat((nights * hotel.price_per_night).toFixed(2));
