@@ -1,18 +1,15 @@
+
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const db = require('../database/db');
+const validate = require('../middleware/validate');
+const { registerSchema, loginSchema } = require('../validators/auth.schemas');
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
+router.post('/register', validate(registerSchema), async (req, res) => {
   const { name, email, password } = req.body;
 
-  if (!name || !email || !password) {
-    return res.status(400).json({ error: 'Name, email, and password are required.' });
-  }
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'Password must be at least 6 characters.' });
-  }
   if (db.userEmailExists(email)) {
     return res.status(409).json({ error: 'An account with this email already exists.' });
   }
@@ -26,12 +23,8 @@ router.post('/register', async (req, res) => {
   res.status(201).json({ message: 'Account created successfully.', user: { id: user.id, name: user.name, email: user.email } });
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', validate(loginSchema), async (req, res) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required.' });
-  }
 
   const user = db.findUserByEmail(email);
   if (!user) {
