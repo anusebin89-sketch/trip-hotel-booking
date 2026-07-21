@@ -3,7 +3,7 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const db = require('../database/db');
 const { requireAuth } = require('../middleware/auth');
-const validate = require('../middleware/validate');
+const { validate } = require('../middleware/validate');
 const { createBookingSchema } = require('../validators/bookings.schemas');
 
 const router = express.Router();
@@ -27,7 +27,6 @@ router.post('/', requireAuth, validate(createBookingSchema), (req, res) => {
 
   const checkInDate = new Date(checkIn);
   const checkOutDate = new Date(checkOut);
-
   const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
   const totalPrice = parseFloat((nights * hotel.price_per_night).toFixed(2));
   const bookingRef = 'SR-' + uuidv4().split('-')[0].toUpperCase();
