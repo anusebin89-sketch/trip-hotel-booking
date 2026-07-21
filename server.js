@@ -1,3 +1,4 @@
+
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
@@ -31,10 +32,35 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Global error handler
+app.use((err, req, res, next) => {
+  if (err && err.isJoi) {
+    const details = err.details.map((detail) => ({
+      field: detail.path.join('.'),
+      message: detail.message.replace(/"/g, "'")
+    }));
+    return res.status(400).json({
+      error: 'Validation failed',
+      statusCode: 400,
+      details
+    });
+  }
+
+  console.error('Unhandled error:', err);
+  res.status(500).json({
+    error: 'Internal server error',
+    statusCode: 500
+  });
+});
+
 // Auto-seed on first run
 require('./seed');
 
-app.listen(PORT, () => {
-  console.log(`\n🏨  StayRed is running at http://localhost:${PORT}`);
-  console.log(`   Press Ctrl+C to stop.\n`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`\n🏨  StayRed is running at http://localhost:${PORT}`);
+    console.log(`   Press Ctrl+C to stop.\n`);
+  });
+}
+
+module.exports = app;
