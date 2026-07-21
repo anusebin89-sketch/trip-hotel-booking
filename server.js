@@ -34,7 +34,6 @@ app.get('*', (req, res) => {
 
 // Global error handler
 app.use((err, req, res, next) => {
-  // Handle Joi validation errors that might bubble up
   if (err && err.isJoi) {
     const details = err.details.map((detail) => ({
       field: detail.path.join('.'),
@@ -47,7 +46,6 @@ app.use((err, req, res, next) => {
     });
   }
 
-  // Handle unexpected errors
   console.error('Unhandled error:', err);
   res.status(500).json({
     error: 'Internal server error',
