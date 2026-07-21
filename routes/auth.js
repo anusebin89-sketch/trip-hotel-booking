@@ -2,7 +2,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const db = require('../database/db');
-const validate = require('../middleware/validate');
+const { validate } = require('../middleware/validate');
 const { registerSchema, loginSchema } = require('../validators/auth.schemas');
 
 const router = express.Router();
