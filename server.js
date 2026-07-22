@@ -1,6 +1,8 @@
+
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -30,6 +32,10 @@ app.use('/api/bookings', require('./routes/bookings'));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+// Error handling (must be registered last)
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 // Auto-seed on first run
 require('./seed');
