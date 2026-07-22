@@ -1,10 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const db = require('../database/db');
+const { authRateLimiter } = require('../middleware/rateLimiter');
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
+router.post('/register', authRateLimiter, async (req, res) => {
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
@@ -26,7 +27,7 @@ router.post('/register', async (req, res) => {
   res.status(201).json({ message: 'Account created successfully.', user: { id: user.id, name: user.name, email: user.email } });
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', authRateLimiter, async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
