@@ -1,6 +1,9 @@
+
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const { getSessionConfig } = require('./config/session');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -10,16 +13,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
-  secret: 'stayred-secret-key-2024',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: false,
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000
-  }
-}));
+// Session with secure configuration
+app.use(session(getSessionConfig()));
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
