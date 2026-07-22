@@ -1,9 +1,14 @@
 const express = require('express');
 const session = require('express-session');
+const cors = require('cors');
 const path = require('path');
+const { getCorsConfig } = require('./config/cors');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+// CORS - must be before other middleware
+app.use(cors(getCorsConfig()));
 
 // Middleware
 app.use(express.json());
