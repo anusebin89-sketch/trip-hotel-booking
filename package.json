@@ -4,12 +4,13 @@
   "description": "StayRed - A hotel booking website",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node -r dotenv/config server.js",
     "seed": "node seed.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon -r dotenv/config server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "uuid": "^9.0.0"
