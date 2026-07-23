@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const helmet = require('helmet');
 const cors = require('cors');
 const path = require('path');
 const { requestId, errorHandler } = require('./middleware/errorHandler');
@@ -7,6 +8,22 @@ const { httpLogger, logger } = require('./middleware/logger');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", 'data:', 'https:'],
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      frameSrc: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
 
 // CORS — restrict to allowed origins in production
 const allowedOrigins = process.env.CORS_ORIGINS
@@ -23,7 +40,6 @@ app.use(cors({
 }));
 
 app.use(httpLogger);
-
 // Middleware
 app.use(requestId);
 app.use(express.json());
