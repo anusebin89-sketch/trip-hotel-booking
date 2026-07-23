@@ -1,11 +1,26 @@
 const express = require('express');
 const session = require('express-session');
+const cors = require('cors');
 const path = require('path');
 const { requestId, errorHandler } = require('./middleware/errorHandler');
 const { httpLogger, logger } = require('./middleware/logger');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+// CORS — restrict to allowed origins in production
+const allowedOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(',').map(o => o.trim())
+  : ['http://localhost:8080', 'http://localhost:3000'];
+
+app.use(cors({
+  origin: (origin, cb) => {
+    // Allow requests with no origin (e.g. same-origin, mobile apps, curl)
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+    cb(new Error(`CORS: origin ${origin} not allowed`));
+  },
+  credentials: true,
+}));
 
 app.use(httpLogger);
 
