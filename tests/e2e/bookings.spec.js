@@ -21,11 +21,13 @@ async function getFirstHotelId(request) {
 }
 
 function validBooking(hotelId) {
+  // Use a unique year offset per run to avoid date conflicts with previous test data
+  const year = 2030 + Math.floor(Date.now() / 1e12);
   return {
     hotelId,
     guestName: 'Jane Doe',
-    checkIn: '2027-03-01',
-    checkOut: '2027-03-05',
+    checkIn: `${year}-03-01`,
+    checkOut: `${year}-03-05`,
     guests: 2,
     cardNumber: TEST_CARD,
     cardName: 'Jane Doe',
