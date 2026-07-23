@@ -2,9 +2,12 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const { requestId, errorHandler } = require('./middleware/errorHandler');
+const { httpLogger, logger } = require('./middleware/logger');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+app.use(httpLogger);
 
 // Middleware
 app.use(requestId);
@@ -41,6 +44,5 @@ app.use(errorHandler);
 require('./seed');
 
 app.listen(PORT, () => {
-  console.log(`\n🏨  StayRed is running at http://localhost:${PORT}`);
-  console.log(`   Press Ctrl+C to stop.\n`);
+  logger.info(`StayRed is running at http://localhost:${PORT}`);
 });
