@@ -18,7 +18,7 @@ router.post('/register', async (req, res) => {
   }
 
   const hashed = await bcrypt.hash(password, 10);
-  const user = db.createUser(name, email, hashed);
+  const user = db.create(name, email, hashed);
 
   req.session.userId = user.id;
   req.session.userName = user.name;
@@ -33,7 +33,7 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({ error: 'Email and password are required.' });
   }
 
-  const user = db.findUserByEmail(email);
+  const user = db.findByEmail(email);
   if (!user) {
     return res.status(401).json({ error: 'Invalid email or password.' });
   }
@@ -59,7 +59,7 @@ router.get('/me', (req, res) => {
   if (!req.session || !req.session.userId) {
     return res.json({ user: null });
   }
-  const user = db.findUserById(req.session.userId);
+  const user = db.findById(req.session.userId);
   res.json({ user: user || null });
 });
 
