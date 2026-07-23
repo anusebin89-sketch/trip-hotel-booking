@@ -1,11 +1,13 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const { requestId, errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Middleware
+app.use(requestId);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -30,6 +32,8 @@ app.use('/api/bookings', require('./routes/bookings'));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+app.use(errorHandler);
 
 // Auto-seed on first run
 require('./seed');
