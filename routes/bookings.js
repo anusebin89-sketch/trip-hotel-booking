@@ -39,7 +39,7 @@ router.post('/', requireAuth, (req, res) => {
   const totalPrice = parseFloat((nights * hotel.price_per_night).toFixed(2));
   const bookingRef = 'SR-' + uuidv4().split('-')[0].toUpperCase();
 
-  const booking = BookingRepository.create({
+  const result = BookingRepository.create({
     bookingRef,
     userId: req.session.userId,
     hotelId,
@@ -50,7 +50,12 @@ router.post('/', requireAuth, (req, res) => {
     totalPrice
   });
 
-  res.status(201).json({ message: 'Booking confirmed!', booking });
+  if (!result) return res.status(404).json({ error: 'Hotel not found.' });
+  if (result.conflict) {
+    return res.status(409).json({ error: 'These dates are no longer available. Please choose different dates.' });
+  }
+
+  res.status(201).json({ message: 'Booking confirmed!', booking: result.booking });
 });
 
 router.get('/my', requireAuth, (req, res) => {
