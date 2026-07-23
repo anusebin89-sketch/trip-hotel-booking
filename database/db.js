@@ -100,10 +100,24 @@ function insertHotelsBulk(hotels) {
 }
 
 /* ── Bookings ──────────────────────────────────────────────────── */
+
+function datesOverlap(aIn, aOut, bIn, bOut) {
+  return new Date(aIn) < new Date(bOut) && new Date(aOut) > new Date(bIn);
+}
+
+// Returns { booking } on success or { conflict: true } when dates overlap with an existing booking
 function createBooking({ bookingRef, userId, hotelId, guestName, checkIn, checkOut, guests, totalPrice }) {
   const store = load();
   const hotel = store.hotels.find(h => h.id === Number(hotelId));
   if (!hotel) return null;
+
+  // Atomically check for date conflicts and write in a single load→check→persist cycle
+  const hasConflict = store.bookings.some(
+    b => b.hotel_id === Number(hotelId) &&
+         b.status === 'confirmed' &&
+         datesOverlap(checkIn, checkOut, b.check_in, b.check_out)
+  );
+  if (hasConflict) return { conflict: true };
 
   const id = nextId(store, 'bookings');
   const booking = {
@@ -118,7 +132,6 @@ function createBooking({ bookingRef, userId, hotelId, guestName, checkIn, checkO
     total_price: totalPrice,
     status: 'confirmed',
     created_at: now(),
-    // Denormalised for easy reads
     hotel_name: hotel.name,
     hotel_location: hotel.location,
     image_url: hotel.image_url,
@@ -126,7 +139,7 @@ function createBooking({ bookingRef, userId, hotelId, guestName, checkIn, checkO
   };
   store.bookings.push(booking);
   persist(store);
-  return booking;
+  return { booking };
 }
 
 function getBookingsByUser(userId) {
