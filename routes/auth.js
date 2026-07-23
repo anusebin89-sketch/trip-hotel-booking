@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const db = require('../database/db');
+const { UserRepository: db } = require('../database/repository');
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.post('/register', async (req, res) => {
   if (password.length < 6) {
     return res.status(400).json({ error: 'Password must be at least 6 characters.' });
   }
-  if (db.userEmailExists(email)) {
+  if (db.emailExists(email)) {
     return res.status(409).json({ error: 'An account with this email already exists.' });
   }
 

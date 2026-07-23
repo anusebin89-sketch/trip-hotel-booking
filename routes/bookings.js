@@ -1,6 +1,6 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
-const db = require('../database/db');
+const { HotelRepository, BookingRepository } = require('../database/repository');
 const { requireAuth } = require('../middleware/auth');
 
 const router = express.Router();
@@ -24,7 +24,7 @@ router.post('/', requireAuth, (req, res) => {
     });
   }
 
-  const hotel = db.getHotelById(hotelId);
+  const hotel = HotelRepository.findById(hotelId);
   if (!hotel) {
     return res.status(404).json({ error: 'Hotel not found.' });
   }
@@ -39,7 +39,7 @@ router.post('/', requireAuth, (req, res) => {
   const totalPrice = parseFloat((nights * hotel.price_per_night).toFixed(2));
   const bookingRef = 'SR-' + uuidv4().split('-')[0].toUpperCase();
 
-  const booking = db.createBooking({
+  const booking = BookingRepository.create({
     bookingRef,
     userId: req.session.userId,
     hotelId,
@@ -54,12 +54,12 @@ router.post('/', requireAuth, (req, res) => {
 });
 
 router.get('/my', requireAuth, (req, res) => {
-  const bookings = db.getBookingsByUser(req.session.userId);
+  const bookings = BookingRepository.findByUser(req.session.userId);
   res.json({ bookings });
 });
 
 router.get('/:ref', requireAuth, (req, res) => {
-  const booking = db.getBookingByRef(req.params.ref, req.session.userId);
+  const booking = BookingRepository.findByRef(req.params.ref, req.session.userId);
   if (!booking) {
     return res.status(404).json({ error: 'Booking not found.' });
   }
