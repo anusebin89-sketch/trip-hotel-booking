@@ -21,13 +21,15 @@ async function getFirstHotelId(request) {
 }
 
 function validBooking(hotelId) {
-  // Use a unique year offset per run to avoid date conflicts with previous test data
-  const year = 2030 + Math.floor(Date.now() / 1e12);
+  // Random far-future dates (27–273 yrs out) to avoid conflicts across test runs
+  const daysOffset = Math.floor(10000 + Math.random() * 90000);
+  const checkIn  = new Date(Date.now() + daysOffset * 86400000).toISOString().slice(0, 10);
+  const checkOut = new Date(Date.now() + (daysOffset + 4) * 86400000).toISOString().slice(0, 10);
   return {
     hotelId,
     guestName: 'Jane Doe',
-    checkIn: `${year}-03-01`,
-    checkOut: `${year}-03-05`,
+    checkIn,
+    checkOut,
     guests: 2,
     cardNumber: TEST_CARD,
     cardName: 'Jane Doe',
