@@ -4,6 +4,9 @@ const { UserRepository: db } = require('../database/repository');
 
 const router = express.Router();
 
+const { requireAuth } = require('../middleware/auth');
+const { resetEmail } = require('../services/emailResetService');
+
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -61,6 +64,18 @@ router.get('/me', (req, res) => {
   }
   const user = db.findById(req.session.userId);
   res.json({ user: user || null });
+});
+
+// POST /api/auth/reset-email
+router.post('/reset-email', requireAuth, async (req, res, next) => {
+  try {
+    const userId = req.session.userId;
+    const { currentPassword, newEmail } = req.body;
+    const updated = await resetEmail({ userId, currentPassword, newEmail });
+    res.json({ message: 'Email updated successfully.', user: updated });
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

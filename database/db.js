@@ -60,6 +60,20 @@ function findUserById(id) {
   return { id: u.id, name: u.name, email: u.email };
 }
 
+function findUserByIdRaw(id) {
+  return load().users.find(u => u.id === Number(id)) || null;
+}
+
+function updateUserEmail(id, newEmail) {
+  const store = load();
+  const user = store.users.find(u => u.id === Number(id));
+  if (!user) return null;
+  user.email = newEmail.toLowerCase();
+  user.updated_at = now();
+  persist(store);
+  return { id: user.id, name: user.name, email: user.email };
+}
+
 function userEmailExists(email) {
   return load().users.some(u => u.email === email.toLowerCase());
 }

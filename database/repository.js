@@ -9,6 +9,8 @@ const UserRepository = {
   create: (name, email, password) => db.createUser(name, email, password),
   findByEmail: (email) => db.findUserByEmail(email),
   findById: (id) => db.findUserById(id),
+  findByIdRaw: (id) => db.findUserByIdRaw(id),
+  updateEmail: (id, newEmail) => db.updateUserEmail(id, newEmail),
   emailExists: (email) => db.userEmailExists(email),
 };
 
