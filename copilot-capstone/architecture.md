@@ -19,14 +19,22 @@ This solution is designed as a modular web application that fits the current pro
 - helmet for HTTP security headers
 - cors for controlled cross-origin access
 - express-session for authenticated user sessions
+- server-side password verification only, with no password values logged or exposed in responses
+- HTTPS, secure cookies, and request throttling to reduce brute-force and credential abuse risk
 
 ### Data Layer
 - Current MVP: JSON file-based persistence through a repository abstraction
-- Future-ready design: the repository layer can be swapped to PostgreSQL, MySQL, or another relational database without changing the business logic
+- Recommended production persistence: PostgreSQL or MySQL with transaction support for atomic user profile updates
+- The repository layer remains the abstraction point for future migration to a more durable and concurrent-capable data store
 
 ### Testing and Quality
 - Jest and Supertest for backend/API testing
 - Playwright for end-to-end flow validation
+
+### Production Readiness Enhancements
+- Structured logging and monitoring for account update events
+- Health checks and backup/restore procedures for the persistence layer
+- Multi-instance deployment and load balancing to reduce single-point-of-failure risk
 
 ---
 
