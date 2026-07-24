@@ -6,6 +6,9 @@ const router = express.Router();
 
 const { requireAuth } = require('../middleware/auth');
 const { resetEmail } = require('../services/emailResetService');
+const { increment } = require('../middleware/monitor');
+const { validateResetEmail } = require('../middleware/validation');
+const { rateLimiter } = require('../middleware/rateLimiter');
 
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
@@ -67,13 +70,15 @@ router.get('/me', (req, res) => {
 });
 
 // POST /api/auth/reset-email
-router.post('/reset-email', requireAuth, async (req, res, next) => {
+router.post('/reset-email', requireAuth, rateLimiter, validateResetEmail, async (req, res, next) => {
   try {
     const userId = req.session.userId;
     const { currentPassword, newEmail } = req.body;
     const updated = await resetEmail({ userId, currentPassword, newEmail });
+    increment('email_reset.success');
     res.json({ message: 'Email updated successfully.', user: updated });
   } catch (err) {
+    increment('email_reset.failure');
     next(err);
   }
 });

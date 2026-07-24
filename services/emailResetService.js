@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const { UserRepository: UserRepo } = require('../database/repository');
+const { logger } = require('../middleware/logger');
 
 const EMAIL_MAX_LENGTH = 100;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -51,9 +52,11 @@ async function resetEmail({ userId, currentPassword, newEmail }) {
   if (!updated) {
     const err = new Error('Failed to update email due to server error.');
     err.status = 500;
+    logger.error({ userId: user.id, newEmail }, 'email-reset:update-failed');
     throw err;
   }
 
+  logger.info({ userId: user.id, newEmail }, 'email-reset:updated');
   return updated;
 }
 
