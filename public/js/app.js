@@ -80,6 +80,60 @@ function handleMyBookings() {
   loadMyBookings();
 }
 
+/* ─── ACCOUNT / RESET EMAIL ───────────────────────────────────── */
+function showAccount() {
+  if (!currentUser) {
+    showPage('auth');
+    switchAuthTab('login');
+    showToast('Please log in to manage your account', 'error');
+    return;
+  }
+  showPage('account');
+}
+
+async function handleResetEmail() {
+  const errEl = document.getElementById('reset-error');
+  const currentPassword = document.getElementById('reset-current-password').value.trim();
+  const newEmail = document.getElementById('reset-new-email').value.trim();
+
+  if (!currentPassword || !newEmail) {
+    showError(errEl, 'Both fields are required.');
+    return;
+  }
+  if (newEmail.length > 100) {
+    showError(errEl, 'Email must be 100 characters or fewer.');
+    return;
+  }
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(newEmail)) {
+    showError(errEl, 'Please enter a valid email address.');
+    return;
+  }
+
+  hideError(errEl);
+
+  try {
+    const res = await fetch('/api/auth/reset-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentPassword, newEmail })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      showError(errEl, data.error || 'Failed to update email.');
+      return;
+    }
+    // Update local user state
+    currentUser = data.user;
+    updateNavAuth();
+    showToast('Email updated successfully.', 'success');
+    document.getElementById('reset-current-password').value = '';
+    document.getElementById('reset-new-email').value = '';
+  } catch (e) {
+    showError(errEl, 'Network error. Please try again.');
+  }
+}
+
 /* ─── MOBILE MENU ────────────────────────────────────────────── */
 function toggleMobileMenu() {
   const menu = document.getElementById('mobile-menu');
